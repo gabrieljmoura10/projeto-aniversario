@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nossa História</title>
+    <style>
+        /* --- Estilos Gerais --- */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #d2b48c, #c19a6b, #a9745a);
+            color: #3e2f1c;
+            /* texto marrom escuro */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            color: #3e2f1c;
+            text-shadow: none;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+        }
+
+        /* --- Botões anos --- */
+        .anos,
+        .galeria {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .ano {
+            background: #8b5e3c;
+            /* marrom quente */
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            user-select: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ano:hover {
+            background: #a9745a;
+            /* marrom claro */
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* --- Galeria de fotos --- */
+        .galeria {
+            margin-top: 10px;
+            gap: 15px;
+        }
+
+        .galeria img {
+            width: 250px;
+            max-width: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .galeria img:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- Cabeçalho da página do ano --- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #3e2f1c;
+            margin-bottom: 20px;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        #voltar {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 12px;
+            background: #8b5e3c;
+            color: white;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        #voltar:hover {
+            background: #a9745a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app">
+        <div id="home">
+            <h1>Em qual ano você quer relembrar a nossa história? 💖</h1>
+
+            <button id="startMusic" class="ano" style="font-size:1.8rem; padding:20px 40px; margin-bottom:40px;">
+                ▶️ Tocar música
+            </button>
+
+            <div class="anos" id="anos-list">
+
+            </div>
+        </div>
+
+        <div id="year-view" style="display:none;">
+            <header>
+                <a id="voltar">⬅ Voltar</a>
+                <h2 id="year-title">Ano</h2>
+            </header>
+            <div class="galeria" id="gallery">
+                <!-- Fotos carregadas aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Playlist de músicas
+        const playlist = ["musica1.mp3", "musica2.mp3", "musica3.mp3"];
+        let currentTrack = 0;
+        const audio = new Audio();
+        audio.volume = 0.2;
+
+        function playTrack(index) {
+            audio.src = playlist[index];
+            return audio.play();
+        }
+
+        audio.addEventListener("ended", () => {
+            currentTrack = (currentTrack + 1) % playlist.length;
+            playTrack(currentTrack);
+        });
+
+        // Tenta tocar música ao carregar
+        playTrack(currentTrack).catch(() => {
+            // Se bloqueado, pode implementar botão de play manual aqui, se quiser
+            console.log("Autoplay bloqueado.");
+        });
+
+        const frasesPorAno = {
+            "2019": "O ano em que tudo começou... nosso primeiro encontro e o início de uma linda história.",
+            "2020": "Um ano de descobertas, momentos únicos e muito amor compartilhado.",
+            "2021": "O ano em que dissemos 'sim' ao noivado e sonhamos com o nosso futuro juntos.",
+            "2022": "O ano mais especial: o dia em que nos tornamos marido e esposa, e começamos uma nova vida.",
+            "2023": "Nosso primeiro ano de casados, aprendendo e crescendo lado a lado.",
+            "2024": "Mais um capítulo de amor, risadas e conquistas juntos.",
+            "2025": "Três anos de casados! Uma história que só cresce e se fortalece."
+        };
+
+        // Dados das fotos por ano
+        const fotosPorAno = {
+            "2019": [
+                "fotos/2019/2019-1.jpg",
+                "fotos/2019/2019-2.jpg",
+                "fotos/2019/2019-3.jpg",
+                "fotos/2019/2019-4.jpg",
+                "fotos/2019/2019-5.jpg",
+                "fotos/2019/2019-6.jpg",
+                "fotos/2019/2019-7.jpg",
+                "fotos/2019/2019-8.jpg",
+                "fotos/2019/2019-9.jpg",
+                "fotos/2019/2019-10.jpg",
+            ],
+            "2020": [
+                "fotos/2020/2020-1.jpg",
+                "fotos/2020/2020-2.jpg",
+                "fotos/2020/2020-3.jpg",
+                "fotos/2020/2020-4.jpg",
+                "fotos/2020/2020-5.jpg",
+                "fotos/2020/2020-6.jpg",
+                "fotos/2020/2020-7.jpg",
+                "fotos/2020/2020-8.jpg",
+                "fotos/2020/2020-9.jpg",
+                "fotos/2020/2020-10.jpg",
+                "fotos/2020/2020-11.jpg",
+                "fotos/2020/2020-12.jpg",
+
+            ],
+            "2021": [
+                "fotos/2021/2021-1.jpg",
+                "fotos/2021/2021-2.jpg",
+                "fotos/2021/2021-3.jpg",
+                "fotos/2021/2021-4.jpg",
+                "fotos/2021/2021-5.jpg",
+                "fotos/2021/2021-6.jpg",
+            ],
+            "2022": [
+                "fotos/2022/2022-1.jpg",
+                "fotos/2022/2022-2.jpg",
+                "fotos/2022/2022-3.jpg",
+                "fotos/2022/2022-4.jpg",
+                "fotos/2022/2022-5.jpg",
+                "fotos/2022/2022-6.jpg",
+                "fotos/2022/2022-7.jpg",
+                "fotos/2022/2022-8.jpg",
+                "fotos/2022/2022-9.jpg",
+                "fotos/2022/2022-10.jpg",
+                "fotos/2022/2022-11.jpg",
+            ],
+            "2023": [
+                "fotos/2023/2023-1.jpg",
+                "fotos/2023/2023-2.jpg",
+                "fotos/2023/2023-3.jpg",
+                "fotos/2023/2023-4.jpg",
+                "fotos/2023/2023-5.jpg",
+                "fotos/2023/2023-6.jpg",
+                "fotos/2023/2023-7.jpg",
+                "fotos/2023/2023-8.jpg",
+            ],
+            "2024": [
+                "fotos/2024/2024-1.jpg",
+                "fotos/2024/2024-2.jpg",
+                "fotos/2024/2024-3.jpg",
+                "fotos/2024/2024-4.jpg",
+                "fotos/2024/2024-5.jpg",
+                "fotos/2024/2024-6.jpg",
+                "fotos/2024/2024-7.jpg",
+                "fotos/2024/2024-8.jpg",
+                "fotos/2024/2024-9.jpg",
+                "fotos/2024/2024-10.jpg",
+                "fotos/2024/2024-11.jpg",
+                "fotos/2024/2024-12.jpg",
+                "fotos/2024/2024-13.jpg",
+                "fotos/2024/2024-14.jpg",
+                "fotos/2024/2024-15.jpg",
+            ],
+            "2025": [
+                "fotos/2025/2025-1.jpg",
+                "fotos/2025/2025-2.jpg",
+                "fotos/2025/2025-3.jpg",
+                "fotos/2025/2025-4.jpg",
+                "fotos/2025/2025-5.jpg",
+                "fotos/2025/2025-6.jpg",
+                "fotos/2025/2025-7.jpg",
+                "fotos/2025/2025-8.jpg",
+                "fotos/2025/2025-9.jpg",
+                "fotos/2025/2025-10.jpg",
+            ]
+        };
+
+        const anos = Object.keys(fotosPorAno);
+
+        const startBtn = document.getElementById("startMusic");
+        const anosListEl = document.getElementById("anos-list");
+        const homeEl = document.getElementById("home");
+        const yearViewEl = document.getElementById("year-view");
+        const yearTitleEl = document.getElementById("year-title");
+        const galleryEl = document.getElementById("gallery");
+        const voltarBtn = document.getElementById("voltar");
+
+        // Cria os botões dos anos mas mantém escondidos
+        anos.forEach(ano => {
+            const a = document.createElement("a");
+            a.className = "ano";
+            a.textContent = ano;
+            a.href = "#";
+            a.addEventListener("click", e => {
+                e.preventDefault();
+                mostrarAno(ano);
+            });
+            anosListEl.appendChild(a);
+        });
+
+        // Quando clicar no botão de start, toca a música e mostra os anos
+        startBtn.addEventListener("click", async () => {
+            try {
+                await playTrack(currentTrack);
+                startBtn.style.display = "none";
+                anosListEl.style.display = "flex";
+            } catch (err) {
+                alert("Não foi possível tocar a música. Tente novamente.");
+            }
+        });
+
+        // Função para mostrar as fotos do ano
+        function mostrarAno(ano) {
+            yearTitleEl.textContent = ano;
+            galleryEl.innerHTML = "";
+
+            const fraseEl = document.createElement("p");
+            fraseEl.textContent = frasesPorAno[ano] || "";
+            fraseEl.style.color = "#3e2f1c";
+            fraseEl.style.fontSize = "1.2rem";
+            fraseEl.style.marginBottom = "40px";
+            fraseEl.style.fontStyle = "italic";
+
+            fraseEl.style.flexBasis = "100%";
+            fraseEl.style.textAlign = "center";
+
+
+            galleryEl.appendChild(fraseEl);
+
+            if (!fotosPorAno[ano] || fotosPorAno[ano].length === 0) {
+                galleryEl.innerHTML = "<p style='color:#fff; font-size:1.2rem;'>Ainda não há fotos para este ano.</p>";
+            } else {
+                fotosPorAno[ano].forEach(src => {
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.alt = `Foto do ano ${ano}`;
+                    galleryEl.appendChild(img);
+                });
+            }
+
+            homeEl.style.display = "none";
+            yearViewEl.style.display = "block";
+        }
+
+        // Voltar para home
+        voltarBtn.addEventListener("click", () => {
+            yearViewEl.style.display = "none";
+            homeEl.style.display = "block";
+        });
+    </script>
+
+</body>
+
+</html>
